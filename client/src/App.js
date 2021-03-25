@@ -4,12 +4,14 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import MapContainer from "./MapContainer";
 
 function App() {
   const [restaurant, setRestaurant] = useState([]);
   const [loadRestaurants, setLoadRestaurants] = useState([]);
   const [filterRestaurant, setFilterRestaurant] = useState([]);
   const [search, setSearch] = useState("");
+  const [searchType, setSearchType] = useState("cuisine");
 
   useEffect(() => {
     load();
@@ -27,11 +29,21 @@ function App() {
 
   // using the search button
   const setFilter = () => {
-    setFilterRestaurant(
-      loadRestaurants.filter((restaurants) =>
-        restaurants.cuisine_type.toLowerCase().includes(search.toLowerCase())
-      )
-    );
+    if (searchType === "cuisine") {
+      setFilterRestaurant(
+        loadRestaurants.filter((restaurants) =>
+          restaurants.cuisine_type.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    } else {
+      setFilterRestaurant(
+        loadRestaurants.filter((restaurants) =>
+          restaurants.restaurant_name
+            .toLowerCase()
+            .includes(search.toLowerCase())
+        )
+      );
+    }
   };
 
   const load = async () => {
@@ -56,6 +68,11 @@ function App() {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const handleSelector = (event) => {
+    // console.log(event.target.value)
+    setSearchType(event.target.value);
   };
 
   const RestaurantDetail = (props) => {
@@ -106,6 +123,11 @@ function App() {
                 Search
               </button>
             </div>
+            <h4>Search by: </h4>
+            <select style={{ margin: "auto" }} onChange={handleSelector}>
+              <option value='cuisine'>Cuisine Type</option>
+              <option value='name'>Restaurant Name</option>
+            </select>
           </div>
         </div>
       </section>
@@ -118,6 +140,8 @@ function App() {
           </div>
         </div>
       </section>
+
+      <MapContainer />
       <ToastContainer />
     </div>
   );
