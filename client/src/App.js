@@ -81,7 +81,11 @@ function App() {
     return (
       <div className='col-sm-6'>
         <div className='card mb-4 shadow-sm'>
-          <img src={restaurant_logo} className='card-img-top ' alt='logo' />
+          <img
+            src={restaurant_logo}
+            className='card-img-top card-img'
+            alt='logo'
+          />
           <div className='card-body'>
             <h5 className='card-title'>{restaurant_name}</h5>
           </div>
